@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Postingan Toko WA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .preview-box {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">📦 Product Post Generator</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Form Input -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">URL Gambar Produk</label>
+                    <input type="text" id="imgUrl" placeholder="https://example.com/gambar.jpg" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700">Harga (Angka saja)</label>
+                        <input type="number" id="price" placeholder="63000" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700">Diskon (%)</label>
+                        <input type="number" id="discount" placeholder="0" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Opsi Ukuran (Pisahkan dengan koma)</label>
+                    <input type="text" id="optSize" placeholder="S, M, L, XL" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Opsi Warna (Pisahkan dengan koma)</label>
+                    <input type="text" id="optColor" placeholder="Hitam, Putih, Merah" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Deskripsi Singkat</label>
+                    <textarea id="desc" rows="4" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">Persamaan warna foto katalog dengan produk asli mencapai 98%. Efek cahaya, kecerahan, kerapatan, dan resolusi layar memungkinkan terjadinya sedikit perbedaan warna.</textarea>
+                </div>
+
+                <button onclick="generateHTML()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded transition duration-200">
+                    Generate Kode HTML
+                </button>
+            </div>
+
+            <!-- Output -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-gray-800">Hasil Kode (Salin ke Blogger):</h2>
+                <div id="outputContainer" class="hidden">
+                    <div id="htmlOutput" class="preview-box text-sm"></div>
+                    <button onclick="copyToClipboard()" class="mt-4 w-full bg-gray-800 hover:bg-black text-white py-2 rounded flex items-center justify-center gap-2 transition">
+                        <span>📋 Salin Kode</span>
+                    </button>
+                </div>
+                <div id="emptyState" class="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-lg text-gray-400">
+                    <p>Isi form dan klik Generate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateHTML() {
+            const imgUrl = document.getElementById('imgUrl').value || 'URL_GAMBAR_DISINI';
+            const price = document.getElementById('price').value || '0';
+            const discount = document.getElementById('discount').value || '0';
+            const optSize = document.getElementById('optSize').value.split(',').map(s => s.trim()).filter(s => s !== "");
+            const optColor = document.getElementById('optColor').value.split(',').map(c => c.trim()).filter(c => c !== "");
+            const desc = document.getElementById('desc').value;
+
+            let sizeList = "";
+            if(optSize.length > 0) {
+                sizeList = `\n  <ul id="Ukuran" class="productOption">\n    ${optSize.map(s => `<li>${s}</li>`).join('\n    ')}\n  </ul>`;
+            }
+
+            let colorList = "";
+            if(optColor.length > 0) {
+                colorList = `\n  <ul id="Warna" class="productOption">\n    ${optColor.map(c => `<li>${c}</li>`).join('\n    ')}\n  </ul>`;
+            }
+
+            const finalHTML = `<div class="productPhoto">
+  <!-- Awal Photo -->
+  <div class="separator" style="clear: both;">
+    <img alt="" src="${imgUrl}" style="width: 100%; max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;" />
+  </div>
+</div>
+
+<div class="productDetail" data-stock="on">
+  <!-- Awal Price -->
+  <span itemprop="price" class="productPrice" data-discount-percent="${discount}">${price}</span>
+  
+  <!-- Option -->${sizeList}${colorList}
+
+  <!-- Description-->
+  <div class="detailDescription">
+    <small><b>Informasi:</b> ${desc}</small>
+  </div>
+</div>`;
+
+            document.getElementById('htmlOutput').innerText = finalHTML;
+            document.getElementById('outputContainer').classList.remove('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('htmlOutput').innerText;
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const btnText = document.querySelector('button span');
+            btnText.innerText = "✅ Berhasil Disalin!";
+            setTimeout(() => { btnText.innerText = "📋 Salin Kode"; }, 2000);
+        }
+    </script>
+</body>
+</html>
