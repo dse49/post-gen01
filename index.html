@@ -3,136 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Postingan Toko WA</title>
+    <title>AninStore Generator V9 - Ultra Precision</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .preview-box {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-height: 400px;
-            overflow-y: auto;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .code-preview { tab-size: 2; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4 md:p-8">
-    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">📦 Product Post Generator</h1>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Form Input -->
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">URL Gambar Produk</label>
-                    <input type="text" id="imgUrl" placeholder="https://example.com/gambar.jpg" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+<body class="bg-[#F8FAFC] min-h-screen pb-12">
+    <!-- Header -->
+    <nav class="bg-white border-b border-slate-200 py-5 mb-8 sticky top-0 z-10">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-600 p-2 rounded-xl text-white shadow-lg shadow-emerald-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
+                <div>
+                    <h1 class="font-extrabold text-xl text-slate-800 leading-tight">AninStore <span class="text-emerald-600">V9</span></h1>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Precision Post Generator</p>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-                <div class="grid grid-cols-2 gap-4">
+    <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Form Input -->
+        <div class="space-y-6">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-xs font-black text-slate-400 uppercase mb-6 tracking-[0.2em] flex items-center gap-2">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> Informasi Utama Produk
+                </h2>
+                
+                <div class="space-y-5">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700">Harga (Angka saja)</label>
-                        <input type="number" id="price" placeholder="63000" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+                        <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase">URL Foto Produk (Utama)</label>
+                        <input type="text" id="mainImage" placeholder="https://..." class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none text-sm transition-all font-medium">
                     </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase">Harga Jual (Angka Saja)</label>
+                            <input type="number" id="price" placeholder="Contoh: 50000" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none text-sm transition-all font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase">Diskon (%)</label>
+                            <input type="number" id="discount" value="0" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none text-sm transition-all font-bold text-emerald-600">
+                        </div>
+                    </div>
+
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700">Diskon (%)</label>
-                        <input type="number" id="discount" placeholder="0" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
+                        <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase">Status Persediaan</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setStock('on')" id="stockOn" class="py-3.5 rounded-2xl text-xs font-black border-2 border-emerald-600 bg-emerald-50 text-emerald-700 transition-all">READY STOCK</button>
+                            <button onclick="setStock('off')" id="stockOff" class="py-3.5 rounded-2xl text-xs font-black border-2 border-slate-100 bg-slate-50 text-slate-400 transition-all">STOK HABIS</button>
+                        </div>
+                        <input type="hidden" id="stockValue" value="on">
                     </div>
                 </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Opsi Ukuran (Pisahkan dengan koma)</label>
-                    <input type="text" id="optSize" placeholder="S, M, L, XL" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Opsi Warna (Pisahkan dengan koma)</label>
-                    <input type="text" id="optColor" placeholder="Hitam, Putih, Merah" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Deskripsi Singkat</label>
-                    <textarea id="desc" rows="4" class="w-full p-2 border rounded mt-1 outline-none focus:ring-2 focus:ring-green-500">Persamaan warna foto katalog dengan produk asli mencapai 98%. Efek cahaya, kecerahan, kerapatan, dan resolusi layar memungkinkan terjadinya sedikit perbedaan warna.</textarea>
-                </div>
-
-                <button onclick="generateHTML()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded transition duration-200">
-                    Generate Kode HTML
-                </button>
             </div>
 
-            <!-- Output -->
-            <div class="space-y-4">
-                <h2 class="text-lg font-semibold text-gray-800">Hasil Kode (Salin ke Blogger):</h2>
-                <div id="outputContainer" class="hidden">
-                    <div id="htmlOutput" class="preview-box text-sm"></div>
-                    <button onclick="copyToClipboard()" class="mt-4 w-full bg-gray-800 hover:bg-black text-white py-2 rounded flex items-center justify-center gap-2 transition">
-                        <span>📋 Salin Kode</span>
-                    </button>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-xs font-black text-slate-400 uppercase mb-6 tracking-[0.2em] flex items-center gap-2">
+                    <span class="w-2 h-2 bg-blue-500 rounded-full"></span> Varian & Detail
+                </h2>
+                
+                <div class="space-y-5">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase">List Ukuran</label>
+                            <input type="text" id="sizes" placeholder="S, M, L, XL" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 outline-none text-sm transition-all font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase">List Warna</label>
+                            <input type="text" id="colors" placeholder="Hitam, Biru" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 outline-none text-sm transition-all font-medium">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-black text-slate-500 mb-2 uppercase">Deskripsi Ringkas</label>
+                        <textarea id="description" rows="4" placeholder="Tuliskan detail produk..." class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 outline-none text-sm transition-all leading-relaxed"></textarea>
+                    </div>
                 </div>
-                <div id="emptyState" class="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-lg text-gray-400">
-                    <p>Isi form dan klik Generate</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-xs font-black text-slate-400 uppercase mb-6 tracking-[0.2em] flex items-center gap-2">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full"></span> Galeri Foto Deskripsi (Maksimal 4)
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Gambar tambahan 1</label>
+                        <input type="text" id="descImg1" placeholder="https://..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none text-xs font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Gambar tambahan 2</label>
+                        <input type="text" id="descImg2" placeholder="https://..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none text-xs font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Gambar tambahan 3</label>
+                        <input type="text" id="descImg3" placeholder="https://..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none text-xs font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Gambar tambahan 4</label>
+                        <input type="text" id="descImg4" placeholder="https://..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none text-xs font-medium">
+                    </div>
                 </div>
+            </div>
+
+            <button onclick="generateHTML()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-5 rounded-3xl shadow-2xl shadow-slate-200 transition-all transform hover:-translate-y-1 active:scale-[0.98] flex items-center justify-center gap-3 tracking-widest text-xs">
+                GENERATE UNTUK TEMPLATE V9
+            </button>
+        </div>
+
+        <!-- Preview & Output -->
+        <div class="flex flex-col h-full">
+            <div id="outputContainer" class="hidden flex-1 flex flex-col">
+                <div class="bg-slate-900 rounded-[2rem] shadow-2xl flex-1 flex flex-col overflow-hidden border border-slate-800">
+                    <div class="bg-slate-800/50 px-8 py-4 flex justify-between items-center border-b border-slate-700/50">
+                        <div class="flex gap-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
+                        </div>
+                        <span class="text-[9px] font-black text-slate-500 tracking-[0.3em] uppercase">V9 Template Code</span>
+                        <button onclick="copyCode()" id="copyBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-black px-4 py-2 rounded-full transition-all">
+                            COPY CODE
+                        </button>
+                    </div>
+                    <div class="flex-1 p-8 relative">
+                        <pre id="resultCode" class="code-preview absolute inset-0 p-8 overflow-auto text-emerald-400 font-mono text-[13px] leading-[1.8]"></pre>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-6 bg-emerald-50 border border-emerald-100 rounded-[2rem] flex items-center gap-5">
+                    <div class="bg-emerald-600 text-white p-3 rounded-2xl shadow-lg shadow-emerald-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-emerald-900 uppercase tracking-wide">Sync Berhasil</p>
+                        <p class="text-[11px] text-emerald-700/80 mt-1">Struktur harga, diskon, dan galeri mini telah disesuaikan dengan JavaScript Template V9.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="placeholder" class="flex-1 border-4 border-dashed border-slate-200 rounded-[3rem] flex flex-col items-center justify-center p-12 text-center">
+                <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-slate-400 font-black text-sm uppercase tracking-widest">Menunggu Data Produk</h3>
+                <p class="text-slate-300 text-xs mt-3 max-w-[240px] leading-relaxed font-medium">Input URL gambar, harga, dan diskon untuk mendapatkan kode yang presisi.</p>
             </div>
         </div>
     </div>
 
     <script>
+        function setStock(val) {
+            document.getElementById('stockValue').value = val;
+            const on = document.getElementById('stockOn');
+            const off = document.getElementById('stockOff');
+            if(val === 'on') {
+                on.className = "py-3.5 rounded-2xl text-xs font-black border-2 border-emerald-600 bg-emerald-50 text-emerald-700 transition-all";
+                off.className = "py-3.5 rounded-2xl text-xs font-black border-2 border-slate-100 bg-slate-50 text-slate-400 transition-all";
+            } else {
+                off.className = "py-3.5 rounded-2xl text-xs font-black border-2 border-red-600 bg-red-50 text-red-700 transition-all";
+                on.className = "py-3.5 rounded-2xl text-xs font-black border-2 border-slate-100 bg-slate-50 text-slate-400 transition-all";
+            }
+        }
+
         function generateHTML() {
-            const imgUrl = document.getElementById('imgUrl').value || 'URL_GAMBAR_DISINI';
+            const img = document.getElementById('mainImage').value || 'https://via.placeholder.com/600';
             const price = document.getElementById('price').value || '0';
-            const discount = document.getElementById('discount').value || '0';
-            const optSize = document.getElementById('optSize').value.split(',').map(s => s.trim()).filter(s => s !== "");
-            const optColor = document.getElementById('optColor').value.split(',').map(c => c.trim()).filter(c => c !== "");
-            const desc = document.getElementById('desc').value;
+            const disc = document.getElementById('discount').value || '0';
+            const stock = document.getElementById('stockValue').value;
+            const desc = document.getElementById('description').value.replace(/\n/g, '<br/>') || 'No description available.';
+            
+            const sizes = document.getElementById('sizes').value.trim();
+            const colors = document.getElementById('colors').value.trim();
 
-            let sizeList = "";
-            if(optSize.length > 0) {
-                sizeList = `\n  <ul id="Ukuran" class="productOption">\n    ${optSize.map(s => `<li>${s}</li>`).join('\n    ')}\n  </ul>`;
+            const sizeLi = sizes ? sizes.split(',').map(s => `    <li>${s.trim()}</li>`).join('\n') : '    <li>N/A</li>';
+            const colorLi = colors ? colors.split(',').map(c => `    <li>${c.trim()}</li>`).join('\n') : '    <li>N/A</li>';
+
+            // Proses Gambar Galeri Mini (Grid 4x1)
+            let descImagesHTML = '';
+            const descImgs = [
+                document.getElementById('descImg1').value,
+                document.getElementById('descImg2').value,
+                document.getElementById('descImg3').value,
+                document.getElementById('descImg4').value
+            ].filter(url => url.trim() !== "");
+
+            if (descImgs.length > 0) {
+                descImagesHTML = `\n    <!-- Galeri Mini (4 Kolom) -->\n    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px;">\n`;
+                descImgs.forEach(url => {
+                    descImagesHTML += `      <div style="aspect-ratio: 1/1; overflow: hidden; border-radius: 8px; border: 1px solid #eeeeee;">\n        <img src="${url}" style="width: 100%; height: 100%; object-fit: cover;" alt="Gambar Produk" />\n      </div>\n`;
+                });
+                descImagesHTML += `    </div>\n`;
             }
 
-            let colorList = "";
-            if(optColor.length > 0) {
-                colorList = `\n  <ul id="Warna" class="productOption">\n    ${optColor.map(c => `<li>${c}</li>`).join('\n    ')}\n  </ul>`;
-            }
-
-            const finalHTML = `<div class="productPhoto">
+            // GENERATOR CORE - MATCHING TEMPLATE V9 JS LOGIC
+            const output = `<div class="productPhoto">
   <!-- Awal Photo -->
   <div class="separator" style="clear: both;">
-    <img alt="" src="${imgUrl}" style="width: 100%; max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;" />
+    <img alt="" src="${img}" style="width: 100%; max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 20px;" />
   </div>
 </div>
 
-<div class="productDetail" data-stock="on">
+<div class="productDetail" data-stock="${stock}">
   <!-- Awal Price -->
-  <span itemprop="price" class="productPrice" data-discount-percent="${discount}">${price}</span>
+  <!-- Template V9 membaca harga murni dari text span di bawah ini -->
+  <span itemprop="price" class="productPrice" data-discount-percent="${disc}">${price}</span>
   
-  <!-- Option -->${sizeList}${colorList}
+  <!-- Option -->
+  <ul id="Ukuran" class="productOption">
+${sizeLi}
+  </ul>
+  <ul id="Warna" class="productOption">
+${colorLi}
+  </ul>
 
   <!-- Description-->
   <div class="detailDescription">
-    <small><b>Informasi:</b> ${desc}</small>
+    <small><b>Informasi:</b> ${desc}</small>${descImagesHTML}
   </div>
 </div>`;
 
-            document.getElementById('htmlOutput').innerText = finalHTML;
+            document.getElementById('resultCode').innerText = output;
+            document.getElementById('placeholder').classList.add('hidden');
             document.getElementById('outputContainer').classList.remove('hidden');
-            document.getElementById('emptyState').classList.add('hidden');
         }
 
-        function copyToClipboard() {
-            const text = document.getElementById('htmlOutput').innerText;
-            const el = document.createElement('textarea');
-            el.value = text;
-            document.body.appendChild(el);
-            el.select();
+        function copyCode() {
+            const code = document.getElementById('resultCode').innerText;
+            const btn = document.getElementById('copyBtn');
+            const temp = document.createElement('textarea');
+            temp.value = code;
+            document.body.appendChild(temp);
+            temp.select();
             document.execCommand('copy');
-            document.body.removeChild(el);
+            document.body.removeChild(temp);
             
-            const btnText = document.querySelector('button span');
-            btnText.innerText = "✅ Berhasil Disalin!";
-            setTimeout(() => { btnText.innerText = "📋 Salin Kode"; }, 2000);
+            const originalText = btn.innerText;
+            btn.innerText = "COPIED!";
+            btn.classList.replace('bg-emerald-600', 'bg-blue-600');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+            }, 2000);
         }
     </script>
 </body>
